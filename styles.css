@@ -357,10 +357,14 @@ body.is-scrollable {
 
 .love-message span {
   font-family: "Cormorant Garamond", "Georgia", serif;
-  font-size: clamp(42px, 10vw, 120px);
-  letter-spacing: 0.16em;
+  font-size: clamp(28px, 9vw, 110px);
+  letter-spacing: clamp(0.08em, 0.9vw, 0.16em);
+  line-height: 1.05;
   text-transform: uppercase;
   color: #fff7f0;
+  text-align: center;
+  padding: 0 6vw;
+  max-width: 95vw;
   text-shadow:
     0 0 16px rgba(255, 214, 169, 0.7),
     0 0 40px rgba(255, 164, 79, 0.7),
@@ -858,6 +862,11 @@ h2 {
     height: min(76vh, 520px);
   }
 
+  .love-message span {
+    line-height: 1.1;
+    padding: 0 8vw;
+  }
+
   .vow-center {
     width: 36px;
     height: 36px;
@@ -913,7 +922,8 @@ h2 {
   }
 
   .love-message span {
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
+    font-size: clamp(26px, 10vw, 88px);
   }
 
   .player {
