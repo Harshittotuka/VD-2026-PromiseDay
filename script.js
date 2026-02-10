@@ -12,9 +12,11 @@ const playerTitle = document.querySelector(".player-title");
 const playerButtons = document.querySelectorAll(".player-btn");
 const baseBgVolume = 0.4;
 const duckedBgVolume = 0.12;
+const revealDuration = 700;
 let typingToken = 0;
 let introToken = 0;
 let bgIndex = 0;
+let vowSequenceStarted = false;
 const bgPlaylist = [
   { src: "Ranjha.mp3", title: "Ranjha" },
   { src: "Tujh Mein Rab Dikhta Hai.mp3", title: "Tujh Mein Rab Dikhta Hai" },
@@ -292,10 +294,30 @@ if (coverButton) {
 
     if (orbit) {
       orbit.classList.remove("is-hidden");
+      requestAnimationFrame(() => {
+        orbit.classList.add("is-revealing");
+      });
+      setTimeout(() => {
+        orbit.classList.remove("is-revealing");
+      }, revealDuration);
     }
 
     if (player) {
       player.classList.remove("is-hidden");
+      requestAnimationFrame(() => {
+        player.classList.add("is-revealing");
+      });
+      setTimeout(() => {
+        player.classList.remove("is-revealing");
+      }, revealDuration);
+    }
+
+    if (!vowSequenceStarted) {
+      vowSequenceStarted = true;
+      vowCards.forEach((card, index) => {
+        card.style.setProperty("--pulse-delay", `${index * 320}ms`);
+        card.classList.add("is-sequenced");
+      });
     }
   });
 }
