@@ -10,6 +10,12 @@ const bgAudio = document.querySelector(".bg-audio");
 const player = document.querySelector(".player");
 const playerTitle = document.querySelector(".player-title");
 const playerButtons = document.querySelectorAll(".player-btn");
+const centerButton = document.querySelector(".vow-center");
+const centerBackdrop = document.querySelector(".center-backdrop");
+const centerPopup = document.querySelector(".center-popup");
+const centerPopupClose = document.querySelector(".center-popup-close");
+const fireOverlay = document.querySelector(".fire-overlay");
+const loveMessage = document.querySelector(".love-message");
 const baseBgVolume = 0.4;
 const duckedBgVolume = 0.12;
 const revealDuration = 700;
@@ -470,4 +476,120 @@ vowCards.forEach((card) => {
 
 if (backdrop) {
   backdrop.addEventListener("click", closeActive);
+}
+
+const openCenterPopup = () => {
+  if (!centerBackdrop || !centerPopup) {
+    return;
+  }
+  centerBackdrop.classList.add("is-visible");
+  centerPopup.classList.add("is-visible");
+  centerPopup.setAttribute("aria-hidden", "false");
+};
+
+const closeCenterPopup = () => {
+  if (!centerBackdrop || !centerPopup) {
+    return;
+  }
+  centerBackdrop.classList.remove("is-visible");
+  centerPopup.classList.remove("is-visible");
+  centerPopup.setAttribute("aria-hidden", "true");
+};
+
+const startFireCracks = () => {
+  if (!fireOverlay) {
+    return;
+  }
+
+  if (!fireOverlay.classList.contains("is-active")) {
+    fireOverlay.classList.add("is-active");
+  }
+
+  if (fireOverlay.childElementCount > 0) {
+    return;
+  }
+
+  const sparks = 42;
+  for (let i = 0; i < sparks; i += 1) {
+    const spark = document.createElement("span");
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    const driftX = (Math.random() * 120 - 60).toFixed(0);
+    const driftY = (Math.random() * -140 - 40).toFixed(0);
+    const delay = (Math.random() * 1.6).toFixed(2);
+    const duration = (1.2 + Math.random() * 1.6).toFixed(2);
+
+    spark.className = "spark";
+    spark.style.left = `${x}%`;
+    spark.style.top = `${y}%`;
+    spark.style.setProperty("--spark-x", `${driftX}px`);
+    spark.style.setProperty("--spark-y", `${driftY}px`);
+    spark.style.animationDelay = `${delay}s`;
+    spark.style.animationDuration = `${duration}s`;
+    fireOverlay.appendChild(spark);
+  }
+};
+
+const launchFireworks = () => {
+  if (!fireOverlay) {
+    return;
+  }
+
+  const bursts = 12;
+  const palette = [
+    { core: "#ffd166", glow: "rgba(255, 209, 102, 0.95)", ring: "rgba(255, 209, 102, 0.75)", ring2: "rgba(255, 170, 60, 0.65)" },
+    { core: "#ff7ab6", glow: "rgba(255, 122, 182, 0.95)", ring: "rgba(255, 160, 210, 0.8)", ring2: "rgba(255, 90, 160, 0.7)" },
+    { core: "#7df9ff", glow: "rgba(125, 249, 255, 0.95)", ring: "rgba(140, 255, 255, 0.75)", ring2: "rgba(70, 210, 255, 0.7)" },
+    { core: "#b388ff", glow: "rgba(179, 136, 255, 0.95)", ring: "rgba(196, 164, 255, 0.75)", ring2: "rgba(140, 95, 255, 0.7)" },
+    { core: "#7dff8f", glow: "rgba(125, 255, 143, 0.95)", ring: "rgba(150, 255, 175, 0.75)", ring2: "rgba(80, 220, 120, 0.7)" },
+    { core: "#ffa94d", glow: "rgba(255, 169, 77, 0.95)", ring: "rgba(255, 195, 120, 0.75)", ring2: "rgba(255, 130, 50, 0.7)" }
+  ];
+  for (let i = 0; i < bursts; i += 1) {
+    const firework = document.createElement("span");
+    const x = 15 + Math.random() * 70;
+    const y = 12 + Math.random() * 55;
+    const delay = (Math.random() * 0.6).toFixed(2);
+    const color = palette[i % palette.length];
+
+    firework.className = "firework";
+    firework.style.left = `${x}%`;
+    firework.style.top = `${y}%`;
+    firework.style.animationDelay = `${delay}s`;
+    firework.style.setProperty("--firework-core", color.core);
+    firework.style.setProperty("--firework-glow", color.glow);
+    firework.style.setProperty("--firework-ring", color.ring);
+    firework.style.setProperty("--firework-ring-2", color.ring2);
+
+    fireOverlay.appendChild(firework);
+    firework.addEventListener("animationend", () => {
+      firework.remove();
+    });
+  }
+};
+
+const acceptCenterVows = () => {
+  closeCenterPopup();
+  if (orbit) {
+    orbit.classList.add("is-cleared");
+  }
+  startFireCracks();
+  launchFireworks();
+  if (loveMessage) {
+    loveMessage.classList.add("is-visible");
+    loveMessage.setAttribute("aria-hidden", "false");
+  }
+};
+
+if (centerButton) {
+  centerButton.addEventListener("click", () => {
+    openCenterPopup();
+  });
+}
+
+if (centerBackdrop) {
+  centerBackdrop.addEventListener("click", closeCenterPopup);
+}
+
+if (centerPopupClose) {
+  centerPopupClose.addEventListener("click", acceptCenterVows);
 }
